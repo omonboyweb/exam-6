@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { Button, Card, Collapse } from "antd";
+import { React, useState } from "react";
+import { Card, Collapse, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { FormCategory } from "./components/formCategory";
 import AddModal from "./components/add-child";
+
 import { deletePro, deleteSubCategory, addSubCategory } from "./store/products";
 
 const { Panel } = Collapse;
 
-export const Products = () => {
+const ProductsPage = () => {
   const products = useSelector((state) => state.productsData.products);
   const dispatch = useDispatch();
 
@@ -15,19 +16,17 @@ export const Products = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
-  // Modalni ochish
   const showModal = (productId) => {
-    setSelectedProductId(productId); // qaysi productga child qo‘shayotganimizni saqlaymiz
+    setSelectedProductId(productId);
     setOpen(true);
   };
 
-  // Modaldagi "OK" tugmasi bosilganda
   const handleOk = (values) => {
     if (selectedProductId) {
       dispatch(
         addSubCategory({
           productId: selectedProductId,
-          subCategory: { ...values, id: Date.now().toString() }, // yangi subCategory
+          subCategory: { ...values, id: Date.now().toString() },
         })
       );
     }
@@ -47,7 +46,7 @@ export const Products = () => {
   return (
     <div className="wrapper__pro">
       <FormCategory />
-      <div className="products__list" style={{ display: "grid", gap: "16px" }}>
+      <div style={{ display: "grid", gap: 16 }}>
         {products.map((product) => (
           <Card
             key={product.id}
@@ -58,7 +57,7 @@ export const Products = () => {
             <Button
               danger
               onClick={() => dispatch(deletePro(product.id))}
-              style={{ marginBottom: "8px" }}
+              style={{ marginBottom: 8 }}
             >
               Delete Product
             </Button>
@@ -77,11 +76,11 @@ export const Products = () => {
                   >
                     <div>
                       <strong>{sub.title}</strong>
-                      <div style={{ fontSize: "12px", color: "#888" }}>
+                      <div style={{ fontSize: 12, color: "#888" }}>
                         {sub.description}
                       </div>
                     </div>
-                    <div>
+                    <div style={{ display: "flex", gap: 4 }}>
                       <Button
                         size="small"
                         danger
@@ -100,7 +99,6 @@ export const Products = () => {
                         size="small"
                         type="primary"
                         onClick={() => showModal(product.id)}
-                        style={{ marginLeft: 4 }}
                       >
                         Add Sub
                       </Button>
@@ -118,7 +116,6 @@ export const Products = () => {
         ))}
       </div>
 
-      {/* Modal */}
       <AddModal
         open={open}
         onOk={handleOk}
@@ -128,3 +125,5 @@ export const Products = () => {
     </div>
   );
 };
+
+export default ProductsPage;

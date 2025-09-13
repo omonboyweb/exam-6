@@ -1,57 +1,38 @@
-import React from "react";
+import { Link, Outlet } from "react-router-dom";
+import { Layout, Menu, theme } from "antd";
 import {
+  UserOutlined,
   LaptopOutlined,
   NotificationOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
-import { Outlet } from "react-router-dom";
-import { Header } from "antd/es/layout/layout";
 
-const { Content, Sider } = Layout;
-
-const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-      children: Array.from({ length: 4 }).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: String(subKey), // ✅ har doim string
-          label: `option ${subKey}`,
-        };
-      }),
-    };
-  }
-);
+const { Sider, Content } = Layout;
 
 const MainLayout = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const menuItems = [
+    { key: "1", icon: <UserOutlined />, label: <Link to="/">Products</Link> },
+    {
+      key: "2",
+      icon: <LaptopOutlined />,
+      label: <Link to="/subpage/1">SubCategory 1</Link>,
+    },
+    {
+      key: "3",
+      icon: <NotificationOutlined />,
+      label: <Link to="/subcategorypage">SubCategory 2</Link>,
+    },
+  ];
+
   return (
-    <Layout className="main__layout" style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <Sider width={200} style={{ background: colorBgContainer }}>
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["sub1"]}
-          style={{ height: "100%", borderInlineEnd: 0 }}
-          items={items2}
-        />
+        <Menu mode="inline" items={menuItems} />
       </Sider>
       <Layout style={{ padding: "0 24px 24px" }}>
-        <Breadcrumb
-          items={[{ title: "Home" }, { title: "List" }, { title: "App" }]}
-          style={{ margin: "16px 0" }}
-        />
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button type="primary">Create category</Button>
-        </Header>
         <Content
           style={{
             padding: 24,

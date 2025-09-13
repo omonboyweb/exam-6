@@ -4,14 +4,14 @@ import { Modal, Form, Input } from "antd";
 const AddModal = ({ open, onOk, onCancel, confirmLoading }) => {
   const [form] = Form.useForm();
 
-  const handleSubmit = async () => {
-    try {
-      const values = await form.validateFields();
-      onOk(values); // Parent komponentga qiymatlarni yuboradi
-      form.resetFields(); // Formani tozalaydi
-    } catch (errorInfo) {
-      console.log("Form validation failed:", errorInfo);
-    }
+  const handleSubmit = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        onOk(values); // parentga values jo‘natamiz
+        form.resetFields();
+      })
+      .catch((info) => console.log("Validate Failed:", info));
   };
 
   return (
@@ -21,8 +21,6 @@ const AddModal = ({ open, onOk, onCancel, confirmLoading }) => {
       onOk={handleSubmit}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
-      okText="Add"
-      cancelText="Cancel"
     >
       <Form form={form} layout="vertical">
         <Form.Item
@@ -30,14 +28,14 @@ const AddModal = ({ open, onOk, onCancel, confirmLoading }) => {
           label="Title"
           rules={[{ required: true, message: "Title kiritish shart!" }]}
         >
-          <Input placeholder="Subcategory title" />
+          <Input />
         </Form.Item>
         <Form.Item
           name="description"
           label="Description"
           rules={[{ required: true, message: "Description kiritish shart!" }]}
         >
-          <Input placeholder="Subcategory description" />
+          <Input />
         </Form.Item>
       </Form>
     </Modal>

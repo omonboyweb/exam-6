@@ -30,15 +30,11 @@ const productsSlice = createSlice({
       }
     },
     addSubCategory: (state, action) => {
-      const { parentId, newSubCategory } = action.payload;
-      state.products = state.products.map((product) =>
-        product.id === parentId
-          ? {
-              ...product,
-              subCategory: [...(product.subCategory || []), newSubCategory],
-            }
-          : product
-      );
+      const { productId, subCategory } = action.payload;
+      const product = state.products.find((p) => p.id === productId);
+      if (product) {
+        product.subCategory.push(subCategory); // emutably qo‘shamiz
+      }
     },
   },
 });

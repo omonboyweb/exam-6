@@ -1,16 +1,23 @@
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import ProductsPage from "./products";
+import SubCategoryPage from "./components/subPage";
 import MainLayout from "./layout/main-layout";
-import { Products } from "./products";
+import SubCategoryPages from "./layout/all-child";
 
 function App() {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<Products />} />
-        </Route>
-      </Routes>
-    </>
+    <Routes>
+      {/* Main layout */}
+      <Route path="/" element={<MainLayout />}>
+        {/* Index page = All Parents */}
+        <Route index element={<ProductsPage />} />
+
+        {/* SubCategory Page = alohida page */}
+        <Route path="subpage/:parentId" element={<SubCategoryPage />} />
+        <Route path="subcategorypage" element={<SubCategoryPages />} />
+      </Route>
+    </Routes>
   );
 }
 
